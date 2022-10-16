@@ -5,7 +5,7 @@
  * Description:       Plugin
  * Version:           1.0
  * Requires at least: 6.0.2
- * Requires PHP:      7.2
+ * Requires PHP:      7.4
  * Author:            Alex Shulha
  * Author URI:        https://github.com/42alexli/
  * License:           GPL v2 or later
