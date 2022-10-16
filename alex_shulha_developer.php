@@ -24,10 +24,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class AlexShulhaDeveloper {
 	public function __construct() {
+
 		/** Cling to the hook admin_menu with function alexshdev_show_nav_item to add admin bar menu item */
 		add_action( 'admin_menu', [ $this, 'alexshdev_show_nav_item' ] );
+
 		/** Cling to the hook wp_enqueue_scripts with function alexshdev_register_scripts to add custom style files */
 		add_action( 'wp_enqueue_scripts', [ $this, 'alexshdev_register_scripts' ] );
+
+		/** Adding a shortcode nicelist to use reviews list anywhere in wordpress */
+		add_shortcode( 'nicelist', [ $this, 'alexshdev_shortcode_creator' ] );
+
+		/** Adding reviews list after tag body on home page */
+		add_action( 'wp_body_open', [ $this, 'alexshdev_show_after_body' ] );
 	}
 	/**
 	 * Adding admin bar menu item ASD Info for plugin options or information.
@@ -78,7 +86,51 @@ class AlexShulhaDeveloper {
 
 		return $data;
 	}
+	/**
+	 * Function rendered html with data from JSON.
+	 * I used require_once function to made code readability
+	 **/
+	public function alexshdev_shortcode_creator():void
+	{
+		require_once( 'html.php' );
+	}
+	/**
+	 * Function rendered html with data from JSON.
+	 * I used require_once function to made code readability
+	 **/
+	public function alexshdev_show_after_body():void
+	{
+		if ( is_home() ) {
+			require_once( 'html.php' );
+		}
+	}
+
+	/**
+	 * Function activation is standard function of plugin there I used flush_rewrite_rules for recreate rewrite rule
+	 * This is more commonly used when using custom post type
+	 **/
+	static function activation():void
+	{
+		flush_rewrite_rules();
+	}
+
+	/**
+	 * Function deactivation is standard function of plugin there I used flush_rewrite_rules for recreate rewrite rule
+	 * This is more commonly used when using custom post type
+	 **/
+	static function deactivation():void
+	{
+		flush_rewrite_rules();
+	}
+
 }
+
+/**
+ * Checking if class exists to create a new instance of class
+ * And set the activation and deactivation hooks for a plugin
+ **/
 if ( class_exists( 'AlexShulhaDeveloper' ) ) {
-$alexshdev = new AlexShulhaDeveloper();
+	$alexshdev = new AlexShulhaDeveloper();
+	register_activation_hook( __FILE__, array( $alexshdev, 'activation' ) );
+	register_deactivation_hook( __FILE__, array( $alexshdev, 'deactivation' ) );
 }
