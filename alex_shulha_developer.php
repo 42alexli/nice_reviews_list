@@ -26,6 +26,8 @@ class AlexShulhaDeveloper {
 	public function __construct() {
 		/** Cling to the hook admin_menu with function alexshdev_show_nav_item to add admin bar menu item */
 		add_action( 'admin_menu', [ $this, 'alexshdev_show_nav_item' ] );
+		/** Cling to the hook wp_enqueue_scripts with function alexshdev_register_scripts to add custom style files */
+		add_action( 'wp_enqueue_scripts', [ $this, 'alexshdev_register_scripts' ] );
 	}
 	/**
 	 * Adding admin bar menu item ASD Info for plugin options or information.
@@ -49,6 +51,14 @@ class AlexShulhaDeveloper {
 	{
 		echo '<p>For example I have inserted review list right after the body tag on home page, this is not an elegant solution, this is done for quick access for you</p>
 		 <p>Use shortcode to show reviews on the page</p><p><b>[nicelist]</b></p>';
+	}
+	/**
+	 * Adding styles and bootstrap.
+	 **/
+	public function alexshdev_register_scripts():void
+	{
+		wp_enqueue_style( 'alexshdev-styles', plugins_url( '/assets/css/style.css', __FILE__ ) );
+		wp_enqueue_style( 'bootstrap', plugins_url( '/assets/css/bootstrap.min.css', __FILE__ ) );
 	}
 }
 if ( class_exists( 'AlexShulhaDeveloper' ) ) {
