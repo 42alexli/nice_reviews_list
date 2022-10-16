@@ -60,6 +60,24 @@ class AlexShulhaDeveloper {
 		wp_enqueue_style( 'alexshdev-styles', plugins_url( '/assets/css/style.css', __FILE__ ) );
 		wp_enqueue_style( 'bootstrap', plugins_url( '/assets/css/bootstrap.min.css', __FILE__ ) );
 	}
+
+	/**
+	 * Adding method to get data from JSON file or from URL which return JSON.
+	 * I wasn't sure how I was supposed to mock the API request.
+	 * So I decided to use file_get_contents which allows you to get the file by URL
+	 * @return array
+	 */
+	public function get_data():array {
+
+		$ourData = json_decode( file_get_contents( __DIR__ . '/data.json' ) );
+		$data = $ourData->toplists->{575};
+		//Sorting by key position
+		usort( $data, function ( $item1, $item2 ) {
+			return $item1->position <=> $item2->position;
+		} );
+
+		return $data;
+	}
 }
 if ( class_exists( 'AlexShulhaDeveloper' ) ) {
 $alexshdev = new AlexShulhaDeveloper();
